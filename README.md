@@ -74,7 +74,8 @@ Your partitions are labeled: If your drive is `/dev/nvme0n1`, your third partiti
 You need to format your root partition. You do not need to format your EFI partition or swap.
 
 ### mount the file systems
-Mount your root filesystem as `/mnt`, and your EFI partition as `/mnt/efi`. This is purely so that you can access those filesystems from the live USB.
+Mount your root filesystem as `/mnt`, and your EFI partition as `/mnt/efi`. This is purely so that you can access those filesystems from the live USB.  
+*Note: The live disk will unmount these directories on reboot, so if you have to reboot the live disk, you'll need to redo this step.*
 
 ## installation
 Hard part's over. I promise. (Well, I don't *promise*, it's sorta all the hard part.)
@@ -134,7 +135,8 @@ Make sure that after you run the `grub-install` command on the wiki, you also ru
 Before exiting chroot and rebooting, you should set up your user.  
 `useradd -G wheel <username>` (`-G wheel` adds you to the `wheel` group, which is basically an "admin" group)  
 `passwd <username>` (set your password)  
-`mkdir -vp ~/home/<username>` (make your home directory)
+`mkdir -vp ~/home/<username>` (make your home directory)  
+`chown <username> ~/home/<username>` (set ownership of your home directory)
 
 Next, you'll need to add yourself (or, more accurately, the `wheel` group) as sudoers. To do this, run `visudo`.  
 *Note: you may need to install `vi` to use visudo. To do so, just run `pacman -S vi`.*
@@ -149,9 +151,32 @@ Your user account should be set up! You should be able to exit chroot, reboot, a
 
 -----------------
 
-# ***WIP***
+## post-installation
+You did it! As long as you didn't run into any hiccups (which, let's be honest, you probably did), you are now a proud Arch User!  
+You're probably not liking it very much, though. Let's get a window manager installed.
 
+### connecting to Wi-Fi
 To [connect to wifi with NetworkManager](https://wiki.archlinux.org/index.php/NetworkManager#nmcli_examples):  
 Enable nmcli [through `systemd`](https://wiki.archlinux.org/index.php/systemd) with `systemctl start NetworkManager.service`.  
-Run `nmcli device wifi connect <SSID> password <password>` to connect to 
+Run `nmcli device wifi connect <SSID> password <password>` to connect to a wifi network.  
+
+We'll have programs that help with automatically connecting and such. However, most of those programs are based on the [X window system](https://wiki.archlinux.org/index.php/Xorg), so we need a GUI before we can handle that.
+
+### setting up yay
+I highly recommend [reading up on `pacman`, Arch's package manager](https://wiki.archlinux.org/index.php/Pacman). Arch has two places to get packages from: The official Arch repo, which `pacman` uses, and the [Arch User Repository (AUR)](https://wiki.archlinux.org/index.php/Arch_User_Repository). Unlike the official Arch repo, packages sourced from the AUR must be compiled from source.
+
+We will do this by hand once, in order to set up [an AUR helper called `yay`](https://aur.archlinux.org/packages/yay/). Follow the instructions on [yay's git repo](https://github.com/Jguer/yay) to do so.  
+*Note: you might need to install git to do so with* `sudo pacman -S git`.
+
+
+Once `yay` is installed, it will wrap all `pacman` commands, but it will also source from the AUR, so there's no real need to use `pacman` anymore. Note that unlike `pacman`, `yay` shouldn't be run with `sudo`. 
+- `yay -S <package>` - install package
+- `yay -Rs <package>` - remove package, as well as its unneeded dependencies
+- `yay -Syu` - update all packages
+- `yay -Q <package>` - search for a package. If `<package>` is not specified, will list all packages.
+- `yay -Qe` - list all packages that you *explicitly* installed (i.e. not dependencies).
+
+### setting up a graphical environment
+Cool, let's get you set up in AwesomeWM. Clone this repo.  
+If you wish to use similar tools, but not use my specific dotfiles, there are some things you need to watch out for. I'll mention those as they come up.
 
