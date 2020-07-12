@@ -158,9 +158,10 @@ You're probably not liking it very much, though. Let's get a window manager inst
 ### connecting to Wi-Fi
 To [connect to wifi with NetworkManager](https://wiki.archlinux.org/index.php/NetworkManager#nmcli_examples):  
 Enable nmcli [through `systemd`](https://wiki.archlinux.org/index.php/systemd) with `systemctl start NetworkManager.service`.  
-Run `nmcli device wifi connect <SSID> password <password>` to connect to a wifi network.  
+Run `nmcli device wifi connect <SSID> password <password>` to connect to a wifi network. We'll have a better solution later.
 
-We'll have programs that help with automatically connecting and such. However, most of those programs are based on the [X window system](https://wiki.archlinux.org/index.php/Xorg), so we need a GUI before we can handle that.
+### clone this repo
+The directory doesn't matter. You'll end up copying a lot to ~/.config.
 
 ### setting up yay
 I highly recommend [reading up on `pacman`, Arch's package manager](https://wiki.archlinux.org/index.php/Pacman). Arch has two places to get packages from: The official Arch repo, which `pacman` uses, and the [Arch User Repository (AUR)](https://wiki.archlinux.org/index.php/Arch_User_Repository). Unlike the official Arch repo, packages sourced from the AUR must be compiled from source.
@@ -176,7 +177,34 @@ Once `yay` is installed, it will wrap all `pacman` commands, but it will also so
 - `yay -Q <package>` - search for a package. If `<package>` is not specified, will list all packages.
 - `yay -Qe` - list all packages that you *explicitly* installed (i.e. not dependencies).
 
-### setting up a graphical environment
+Setting up yay's settings is not too hard either. First, enable color:  
+`sudo vim pacman.conf`  
+Uncomment this line in **Misc Options**:  
+`# Color`
+
+The rest will be handled by copying `dotfiles/.config/yay/` to `~/.config/yay`.
+
+## setting up a graphical environment
 Cool, let's get you set up in AwesomeWM. Clone this repo.  
 If you wish to use similar tools, but not use my specific dotfiles, there are some things you need to watch out for. I'll mention those as they come up.
 
+### lightdm
+`yay -S lightdm lightdm-webkit2-greeter xorg-server`  
+Then, [edit the ligtdm config to use the webkit greeter](https://wiki.archlinux.org/index.php/LightDM#Greeter).  
+Finally, [enable the systemd service](https://wiki.archlinux.org/index.php/LightDM#Enabling_LightDM) using `systemctl enable lightdm.service`.
+
+Eventually I'll make my own webkit theme. :)
+
+### awesomeWM
+`yay -S awesome-git`  
+*Note: This will install the beta version of awesomeWM. It has a better notification system. In the future, this will switch to awesome*
+
+Copy `dotfiles/.config/awesome/` to `~/.config/awesome`.
+
+### st
+```
+cd dotfiles/suckless/st
+sudo make install
+cd ../tabbed
+sudo make install
+```
