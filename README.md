@@ -196,15 +196,29 @@ Finally, [enable the systemd service](https://wiki.archlinux.org/index.php/Light
 Eventually I'll make my own webkit theme. :)
 
 ### awesomeWM
-`yay -S awesome-git`  
-*Note: This will install the beta version of awesomeWM. It has a better notification system. In the future, this will switch to awesome*
+`yay -S awesome lain-git ttf-jetbrains-mono rofi`
 
-Copy `dotfiles/.config/awesome/` to `~/.config/awesome`.
+Copy `dotfiles/.config/awesome/` to `~/.config/awesome`.  
+Copy `dotfiles/.config/rofi/` to `~/.config/rofi`.
 
 ### st
+
+`yay -S nerd-fonts-jetbrains-mono`  
+
 ```
 cd dotfiles/suckless/st
 sudo make install
 cd ../tabbed
 sudo make install
 ```
+
+### zsh
+
+`yay -S zsh zsh-autosuggestions zsh-syntax-highlighting`
+
+Copy `dotfiles/.config/zsh` to `~/.config/zsh`.  
+Source `~/.config/zshrc` in your `~.zshrc`.
+
+### compton
+
+`yay -S compton-tryone-git`
