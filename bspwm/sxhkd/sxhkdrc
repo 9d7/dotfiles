@@ -1,0 +1,137 @@
+#Rofi
+super + p
+    rofi -show drun
+
+#arcolinux-logout
+super + x
+    arcolinux-logout
+
+#discord
+super + d
+    gtk-launch discord
+
+#Terminal
+super + t
+    kitty
+
+super + Return
+    kitty
+
+#File-Manager
+super + f
+	pcmanfm
+
+#reload sxhkd:
+super + s
+	pkill -USR1 -x sxhkd
+
+#Firefox
+super + b
+    firefox
+
+#Scrot
+super + ctrl + s
+    maim -u | xclip -selection clipboard -t image/png -i
+
+super + shift + s
+    maim -s -u | xclip -selection clipboard -t image/png -i
+
+#Raises volume
+XF86AudioRaiseVolume
+    amixer set Master 10%+
+
+#Lowers volume
+XF86AudioLowerVolume
+    amixer set Master 10%-
+
+#Mute
+XF86AudioMute
+    amixer -D pulse set Master 1+ toggle
+
+#Brightness up
+XF86MonBrightnessUp
+    xbacklight -inc 10
+
+#Brightness down
+XF86MonBrightnessDown
+    xbacklight -dec 10
+
+#Hide polybar
+super + y
+    polybar-msg cmd toggle
+
+#Toggle fullscreen of window
+super + shift + f
+	bspc node --state \~fullscreen
+
+# Toggle pseudo tiling of window
+super + shift + p
+	bspc node --state \~pseudo_tiled
+
+#kill
+super + q
+	bspc node -c
+
+super + shift + c
+	bspc node -c
+
+#Focus selected desktop
+super + Tab
+	bspc desktop -f '^{1-5}'
+
+# Increase/decrease window gap on focused desktop
+super + bracket{left,right}
+	bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 5 ))
+
+# set the window state
+super + space
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Move focus to other monitor
+super + w
+		bspc monitor -f next
+
+#Reload bspwm
+super + shift + r
+	~/.config/bspwm/bspwmrc
+
+#kill
+super + shift + q
+	bspc node -c
+
+# Focus/swap windows by direction
+super + shift + {h,j,k,l}
+	bspc node --swap {west,south,north,east}
+
+super + {h,j,k,l}
+    /home/eric/code/vim-kitty-navigator/kitty_aware_move.sh {west,south,north,east}
+
+# Flip layout vertically/horizontally
+super + {_,shift + }a
+	bspc node @/ --flip {vertical,horizontal}
+
+# Move focused window to other monitor
+super + shift + w
+	bspc node -m next --follow
+
+# Focus/swap windows by direction
+super + ctrl + {Left,Down,Up,Right}
+	bspc node --{focus} {west,south,north,east}
+
+# Contract tiled space
+super + ctrl + {h,j,k,l}
+	bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
+
+#Switch here between qwerty and azerty or make new one
+#Focus selected desktop FOR QWERTY KEYBOARDS
+super + {1-5}
+	bspc desktop -f 'focused:^{1-5}'
+
+#Switch here between qwerty and azerty or make new one
+#Move window to selected desktop FOR QWERTY KEYBOARDS
+super + shift + {1-5}
+    id=$(bspc query -N -n); bspc node -d 'focused:^{1-5}'; bspc node -f ${id}}
+
+# Focused desktop window gap
+super + button{4,5}
+  bspc config -d focused window_gap $((`bspc config -d focused window_gap` {-,+} 2 ))

@@ -1,0 +1,13 @@
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  SESSION_TYPE=remote/ssh
+else
+  case $(ps -o comm= -p $PPID) in
+    sshd|*/sshd) SESSION_TYPE=remote/ssh;;
+  esac
+fi   
+
+function prompt_precmd() {
+    export PROMPT="%F{8}%m %b%F{red}♥ %F{3}%B%~"$'\n'"%F{green}%n %F{blue}»%f "
+}
+
+add-zsh-hook precmd prompt_precmd
